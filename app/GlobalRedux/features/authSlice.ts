@@ -24,12 +24,12 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.user = { username: action.payload.username};
+      state.user = { username: action.payload.user.username};
       state.token = action.payload.token;
       state.isAuthenticated = true;
     },
     register: (state, action) => {
-      state.user = { username: action.payload.username};
+      state.user = { username: action.payload.user.username};
       state.token = action.payload.token;
       state.isAuthenticated = true;
     },

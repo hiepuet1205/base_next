@@ -1,22 +1,32 @@
 'use client'
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import {register} from '../GlobalRedux/features/authSlice';
+import { useRouter } from 'next/navigation';
+import Cookies from "js-cookie";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [valid, setValid] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-//   const usernameRules = [
-//     (v) => !!v || 'Vui lòng nhập tên đăng nhập',
-//   ];
-
-//   const passwordRules = [
-//     (v) => !!v || 'Vui lòng nhập mật khẩu',
-//   ];
-
-  const submit = () => {
-    // Xử lý logic đăng ký ở đây
-    console.log('Đăng ký thành công!');
+  const submit = async () => {
+    const apiUrl = 'http://localhost:5000/';
+      const res = await fetch(`${apiUrl}auth/register`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (data.access_token) {
+        dispatch(register(data));
+        Cookies.set("loggedin", "true");
+        router.push('/');
+      } 
   };
 
   return (
